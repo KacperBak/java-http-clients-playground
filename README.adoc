@@ -1,0 +1,10 @@
+= README
+Simple playground for Java HTTP clients
+
+== Sources
+- https://openjdk.java.net/groups/net/httpclient/intro.html
+- https://www.baeldung.com/java-9-http-client
+- https://www.twilio.com/blog/5-ways-to-make-http-requests-in-java
+- https://mkyong.com/java/java-11-httpclient-examples/
+- https://reflectoring.io/comparison-of-java-http-clients/
+- https://www.vogella.com/tutorials/JavaHttpClient/article.html
