@@ -3,12 +3,60 @@
  */
 package de.kacperbak.java.http.clients.playground;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+
+    private final HttpClient httpClient;
+
+    public App() {
+        this.httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .connectTimeout(Duration.ofSeconds(20))
+                .build();
+    }
+
+    public String getRequest(String url) {
+        String result = "";
+
+        // create request
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+                .build();
+
+        try {
+            // execute blocking request
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                result = response.body();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        var url1 = "https://postman-echo.com/get";
+        var url2 = "https://postman-echo.com/get?foo1=bar1&foo2=bar2";
+
+        var app = new App();
+        var bodyAsJson = app.getRequest(url2); // select here between url1 OR url2
+        System.out.printf("received body: '%s'\n", bodyAsJson);
+
+        var dtoOptional = ResponseDto.parseFromBody(bodyAsJson);
+        if (dtoOptional.isPresent()) {
+            var dto = dtoOptional.get();
+            System.out.printf("args: '%s', url: '%s'\n", dto.getArgs(), dto.getUrl());
+        } else {
+            System.out.printf("Unable to fetch 'args' and 'url' using: '%s'", url1);
+        }
     }
 }

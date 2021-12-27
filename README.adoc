@@ -8,3 +8,4 @@ Simple playground for Java HTTP clients
 - https://mkyong.com/java/java-11-httpclient-examples/
 - https://reflectoring.io/comparison-of-java-http-clients/
 - https://www.vogella.com/tutorials/JavaHttpClient/article.html
+- https://www.geeksforgeeks.org/parse-json-java/
